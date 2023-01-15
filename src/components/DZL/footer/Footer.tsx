@@ -18,7 +18,7 @@ export default function Footer() {
   return (
     <Box
       sx={{
-        background: Colors.shaft,
+        background: Colors.dark,
         color: Colors.white,
         p: { xs: 4, md: 10 },
         pt: 12,
@@ -30,9 +30,8 @@ export default function Footer() {
         <Grid item md={6} lg={4}>
           <FooterTitle variant="body1">About us</FooterTitle>
           <Typography>
-            Lorem ipsum dolor sit amet cons adipisicing elit sed do eiusm tempor
-            incididunt ut labor et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud.
+            We are a small busuiness located in Orlando, Florida looking to help
+            other small busuiness grow!
           </Typography>
           <Box
             sx={{
@@ -40,20 +39,14 @@ export default function Footer() {
               color: Colors.dove_gray,
             }}
           >
-            <FacebookIcon sx={{ mr: 1 }} />
-            <TwitterIcon sx={{ mr: 1 }} />
-            <InstagramIcon />
+            {/* <FacebookIcon sx={{ mr: 1 }} /> */}
+            {/* <TwitterIcon sx={{ mr: 1 }} />
+            <InstagramIcon /> */}
           </Box>
         </Grid>
         <Grid item md={6} lg={2}>
           <FooterTitle variant="body1">information</FooterTitle>
           <List>
-            <ListItemText>
-              <Typography lineHeight={2}>About Us</Typography>
-            </ListItemText>
-            <ListItemText>
-              <Typography lineHeight={2}>Order Tracking</Typography>
-            </ListItemText>
             <ListItemText>
               <Typography lineHeight={2}>Privacy &amp; Policy</Typography>
             </ListItemText>
@@ -62,7 +55,7 @@ export default function Footer() {
             </ListItemText>
           </List>
         </Grid>
-        <Grid item md={6} lg={2}>
+        {/* <Grid item md={6} lg={2}>
           <FooterTitle variant="body1">my account</FooterTitle>
           <List>
             <ListItemText>
@@ -78,25 +71,11 @@ export default function Footer() {
               <Typography lineHeight={2}>Wishlist</Typography>
             </ListItemText>
           </List>
-        </Grid>
-        <Grid item md={6} lg={4}>
-          <FooterTitle variant="body1">newsletter</FooterTitle>
-          <Stack>
-            <SubscribeTf
-              color="primary"
-              label="Email address"
-              variant="standard"
-            />
-            <Button
-              startIcon={<SendIcon sx={{ color: Colors.white }} />}
-              sx={{ mt: 4, mb: 4 }}
-              variant="contained"
-            >
-              Subscribe
-            </Button>
-          </Stack>
-        </Grid>
+        </Grid> */}
       </Grid>
+      <Typography lineHeight={2}>
+        2022 All Rights Reserved - Drop Zone Live LLC
+      </Typography>
     </Box>
   );
 }

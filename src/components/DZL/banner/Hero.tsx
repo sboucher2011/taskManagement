@@ -30,10 +30,3 @@ export default function Hero() {
     </BannerContainer>
   );
 }
-
-//         We work with you to transform your dream into a
-//         passive income or active business. Working with new
-//         or small businesses is our specialty, we have
-//         different contract pricing offers that help make
-//         building your vision a reality. Contact us today to
-//         start your journey!

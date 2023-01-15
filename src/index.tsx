@@ -1,16 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import DZL_Home from './views/DZL/Home';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import HomePage from "./views/DZL/HomePage/Home";
+import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement,
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <DZL_Home />
-  </React.StrictMode>,
+    <HomePage />
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

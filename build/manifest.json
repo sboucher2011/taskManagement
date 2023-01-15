@@ -1,6 +1,6 @@
 {
-  "short_name": "Drop Zone Live",
-  "name": "Web Based Solutions",
+  "short_name": "React App",
+  "name": "Create React App Sample",
   "icons": [
     {
       "src": "favicon.ico",

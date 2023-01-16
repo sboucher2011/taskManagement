@@ -2,6 +2,8 @@ import { Box, Button, Typography, TextField, colors } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Colors } from "../../../theme/home";
 
+import "./animation.css";
+
 export const ContactContainer = styled(Box)(({ matches, theme }) => ({
   //   display: "flex",
   justifyContent: "center",

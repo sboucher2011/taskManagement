@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { TextField, Stack, Container } from "@mui/material";
-import { BannerShopButton, BannerTitle } from "../banner/styles";
+import { Stack, Container } from "@mui/material";
+import { BannerShopButton } from "../banner/styles";
 import { ContactContainer, ContactTitle, ContactField } from "./styles";
 import { Colors } from "../../../theme/home";
 import emailjs from "@emailjs/browser";
+import { ImSpinner2 } from "react-icons/im";
 
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
@@ -13,11 +14,14 @@ const Contact = () => {
   const [message, setMessage] = useState("");
   const [isEnabled, setIsEnabled] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(false);
+  const [sendingEmail, setSendingEmail] = useState(false);
 
   const form = useRef();
 
   const handleSendEmail = (e) => {
     e.preventDefault();
+    setSendingEmail(true);
+    setIsEnabled(true);
 
     emailjs
       .sendForm(
@@ -28,9 +32,11 @@ const Contact = () => {
       )
       .then(
         (result) => {
+          setSendingEmail(false);
           setIsEmailSent(true);
         },
         (error) => {
+          setSendingEmail(false);
           console.log(error.text);
         }
       );
@@ -87,8 +93,21 @@ const Contact = () => {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
               />
+
               <BannerShopButton disabled={!isEnabled} type="submit">
-                Send Now!
+                {sendingEmail && (
+                  <ImSpinner2
+                    icon="spinner"
+                    className="spinner"
+                    size="30px"
+                    color="white"
+                    style={{
+                      marginRight: "5px",
+                    }}
+                  />
+                )}
+                {sendingEmail && <span>...sending</span>}
+                {!sendingEmail && <span>Send Now!</span>}
               </BannerShopButton>
             </Stack>
           </form>

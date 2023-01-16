@@ -7,6 +7,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
+import Axios from "axios";
+
 export default function TaskForm() {
   const [open, setOpen] = useState(false);
 
@@ -16,6 +18,16 @@ export default function TaskForm() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleSave = () => {
+    Axios.post("http://localhost:3005/addTodo", { name: "testing" })
+      .then(() => {
+        alert("it worked");
+      })
+      .catch(() => {
+        alert("broken");
+      });
   };
 
   return (
@@ -50,7 +62,7 @@ export default function TaskForm() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Save</Button>
+          <Button onClick={handleSave}>Save</Button>
         </DialogActions>
       </Dialog>
     </div>

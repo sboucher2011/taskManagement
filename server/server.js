@@ -1,8 +1,11 @@
 // external
 import express from "express";
-import mongoose from "mongoose";
 import connectDB from "./config/db.js";
 import dotenv from "dotenv";
+import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
+
+// routes
+import toDoRoutes from "./routes/todoRoutes.js";
 
 //----------------------------
 // DATABASE CONNECTION
@@ -13,11 +16,12 @@ connectDB();
 
 const app = express();
 
-// // app.use(cors());
-// app.use(express.json());
+// routes
+app.use("/api/todo", toDoRoutes);
 
-// // routes
-// //app.use("/api/todos", toDoRoutes);
+// middleware
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 

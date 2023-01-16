@@ -1,11 +1,13 @@
 // external
 import express from "express";
 import connectDB from "./config/db.js";
+import path from "path";
 import dotenv from "dotenv";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 // routes
 import toDoRoutes from "./routes/todoRoutes.js";
+import _default from "concurrently";
 
 //----------------------------
 // DATABASE CONNECTION
@@ -18,6 +20,15 @@ const app = express();
 
 // routes
 app.use("/api/todo", toDoRoutes);
+
+// deployment
+const __dirname = path.resolve();
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/client/build")));
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
+  );
+}
 
 // middleware
 app.use(notFound);

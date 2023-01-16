@@ -2,11 +2,16 @@
   "name": "taskmanagementfrontend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
+  "type": "module",
   "scripts": {
-    "serve": "node server/server.js",
-    "develop": "concurrently \"cd server && npm run serve\" \"cd client && npm run start\"",
-    "build": "cd client && npm run build"
+    "start": "node server/server",
+    "serve": "nodemon server/server",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "data:import": "node server/seeder",
+    "data:destroy": "node server/seeder -d",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
   },
   "repository": {
     "type": "git",
@@ -19,6 +24,12 @@
   },
   "homepage": "https://github.com/sboucher2011/taskManagementFrontend#readme",
   "dependencies": {
-    "concurrently": "^7.6.0"
+    "dotenv": "^16.0.0",
+    "express": "^4.18.2",
+    "mongoose": "^6.8.3"
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "nodemon": "^2.0.20"
   }
 }

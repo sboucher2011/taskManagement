@@ -1,23 +1,25 @@
-const express = require("express");
-const app = express();
-const mongoose = require("mongoose");
-const cors = require("cors");
-const ToDoModal = require("./modals/todos");
-require("dotenv").config();
+// external
+import express from "express";
+import mongoose from "mongoose";
+import connectDB from "./config/db.js";
+import dotenv from "dotenv";
 
-// routes
-import toDoRoutes from "./routes/todoRoutes.js";
-
-app.use(cors());
-app.use(express.json());
-
-// routes
-app.use("/api/todos", toDoRoutes);
-
+//----------------------------
 // DATABASE CONNECTION
-mongoose.connect(process.env.MONGODB, { useNewUrlParser: true });
+//----------------------------
+dotenv.config();
 
-const PORT = process.env.PORT || 3005;
+connectDB();
+
+const app = express();
+
+// // app.use(cors());
+// app.use(express.json());
+
+// // routes
+// //app.use("/api/todos", toDoRoutes);
+
+const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
   console.log(`You are connected on port ${PORT}`);

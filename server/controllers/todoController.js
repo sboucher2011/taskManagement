@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import Todo from "../modals/todos.js";
+import Todo from "../models/todos.js";
 
 // @desc    Create new to do
 // @route   POST /api/todo

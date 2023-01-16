@@ -1,4 +1,5 @@
 import express from "express";
+
 const router = express.Router();
 import {
   addToDo,
@@ -7,7 +8,7 @@ import {
   getMyTodos,
   getTodos,
 } from "../controllers/orderController.js";
-import { protect, admin } from "../middleware/authMiddleware.js";
+// import { protect, admin } from "../middleware/authMiddleware.js";
 
 router.route("/").post(protect, addToDo).get(protect, admin, getTodos);
 router.route("/mytodos").get(protect, getMyTodos);

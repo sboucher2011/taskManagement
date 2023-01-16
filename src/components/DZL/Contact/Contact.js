@@ -62,7 +62,7 @@ const Contact = () => {
             paddingBottom: "8px",
           }}
         >
-          <ContactTitle variant="h6">Contact Us to Get Started</ContactTitle>
+          <ContactTitle variant="h6">Get Started Today!</ContactTitle>
           <form ref={form} onSubmit={handleSendEmail}>
             <Stack spacing={2}>
               <ContactField

@@ -22,6 +22,8 @@ const dzl = () => {
       <NavBar onClick={handleClickScroll} />
       <Hero />
       <Promotions />
+      {/* Existing Solutions */}
+      {/* Custom Made Solutions */}
       <div id="solutions">
         <About />
       </div>
@@ -29,7 +31,6 @@ const dzl = () => {
         <Contact />
       </div>
       {/* Reviews Bar */}
-      {/* Contact Us */}
       <Footer />
     </>
   );

@@ -8,7 +8,7 @@ export const ContactContainer = styled(Box)(({ matches, theme }) => ({
   width: "100%",
   height: "100%",
   padding: "0px 0px",
-  background: Colors.secondary,
+  background: Colors.white,
   //   [theme.breakpoints.down("sm")]: {
   //     flexDirection: "column",
   //     alignItems: "center",
@@ -19,7 +19,7 @@ export const ContactTitle = styled(Typography)(({ matches, theme }) => ({
   lineHeight: 1.5,
   fontSize: "35px",
   marginBottom: "20px",
-  color: "white",
+  color: "black",
   [theme.breakpoints.down("sm")]: {
     fontSize: "42px",
   },
@@ -30,7 +30,7 @@ export const ContactField = styled(TextField)(() => ({
   //     color: Colors.primary,
   //   },
   ".MuiInputLabel-root": {
-    color: Colors.white,
+    color: Colors.black,
   },
 
   ".MuiInput-root::before": {

@@ -7,7 +7,6 @@ import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 // routes
 import toDoRoutes from "./routes/todoRoutes.js";
-import _default from "concurrently";
 
 //----------------------------
 // DATABASE CONNECTION

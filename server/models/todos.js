@@ -2,9 +2,13 @@ import mongoose from "mongoose";
 
 const ToDoScchema = mongoose.Schema(
   {
-    name: {
+    title: {
       type: String,
       required: true,
+    },
+    description: {
+      type: String,
+      require: false,
     },
   },
   {

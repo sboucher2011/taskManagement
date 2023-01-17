@@ -16,6 +16,7 @@ dotenv.config();
 connectDB();
 
 const app = express();
+app.use(express.json());
 
 // routes
 app.use("/api/todo", toDoRoutes);
@@ -33,7 +34,7 @@ if (process.env.NODE_ENV === "production") {
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 app.listen(PORT, () => {
   console.log(`You are connected on port ${PORT}`);

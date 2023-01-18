@@ -1,8 +1,8 @@
-import axios from "axios";
 import React from "react";
 import { useQuery } from "react-query";
 import { Todo } from "../../../interfaces/Todo";
 import { sendApiRequest } from "../../../utils/helpers";
+import TaskForm from "../../../components/TM/TaskForm/TaskForm";
 
 const ToDo = () => {
   const { error, isLoading, data, refetch } = useQuery("todos", async () => {
@@ -12,6 +12,7 @@ const ToDo = () => {
 
   return (
     <>
+      <TaskForm />
       <h2>My To Do's </h2>
       {isLoading ?? <p>Loading ...</p>}
       {data &&

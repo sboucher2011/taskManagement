@@ -2,28 +2,20 @@ import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { Stack } from "@mui/system";
+import { Container, Stack } from "@mui/system";
 import { Avatar } from "@mui/material";
 
 import { stringAvatar } from "../../../utils/StringAvatar";
-import TaskForm from "../TaskForm/TaskForm";
 import EmployeeForm from "../EmployeeForm/EmployeeForm";
 import TownForm from "../TownForm/TownForm";
 import StandardTaskForm from "../StandardTaskForm/StandardTaskForm";
 import ToDo from "../../../views/TM/ToDo/ToDo";
+import SideBarDrawer from "./SideBarDrawer";
 
 const drawerWidth = 240;
 
@@ -38,60 +30,17 @@ interface Props {
 export default function SideBar(props: Props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [tab, setTab] = useState("");
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const drawer = (
-    <div>
-      {/* <Toolbar /> */}
-      <h3>Menu</h3>
-      <List>
-        {["Towns", "Tasks", "Reimbursment", "Time Cards"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <h3>Manager</h3>
-      <List>
-        {["Towns", "Standard Tasks", "Employees", "Reports"].map(
-          (text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          )
-        )}
-      </List>
-      <Divider />
-      <h3>Settings</h3>
-      <List>
-        {["Profile", "Settings", "Log Out"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </div>
-  );
+  console.log(tab);
+
+  const handleSetTab = (selectedCategory: string) => {
+    setTab(selectedCategory);
+  };
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
@@ -120,10 +69,12 @@ export default function SideBar(props: Props) {
             <Typography variant="h6" noWrap component="div">
               Monday January 16, 2023
             </Typography>
-            <Typography variant="h6" noWrap component="div">
-              Welcome, Janice
-            </Typography>
-            <Avatar {...stringAvatar("Janice Boucher")} />
+            <Container>
+              <Typography variant="h6" noWrap component="div">
+                Welcome, Janice
+              </Typography>
+              <Avatar {...stringAvatar("Janice Boucher")} />
+            </Container>
           </Stack>
         </Toolbar>
       </AppBar>
@@ -132,7 +83,6 @@ export default function SideBar(props: Props) {
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           container={container}
           variant="temporary"
@@ -149,7 +99,7 @@ export default function SideBar(props: Props) {
             },
           }}
         >
-          {drawer}
+          <SideBarDrawer onCategorySelected={handleSetTab} />
         </Drawer>
         <Drawer
           variant="permanent"
@@ -162,7 +112,7 @@ export default function SideBar(props: Props) {
           }}
           open
         >
-          {drawer}
+          <SideBarDrawer onCategorySelected={handleSetTab} />
         </Drawer>
       </Box>
       <Box
@@ -174,11 +124,14 @@ export default function SideBar(props: Props) {
         }}
       >
         <Toolbar />
-        <TaskForm />
-        <EmployeeForm />
-        <TownForm />
-        <StandardTaskForm />
-        <ToDo />
+        {tab === "" && (
+          <>
+            <EmployeeForm />
+            <TownForm />
+            <StandardTaskForm />{" "}
+          </>
+        )}
+        {tab === "Tasks" && <ToDo />}
       </Box>
     </Box>
   );

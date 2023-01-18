@@ -1,5 +1,6 @@
 // external
-import React from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
+import React, { FC, ReactElement } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // views
@@ -9,17 +10,19 @@ import Dashboard from "./views/TM/Dashboard/Dashboard";
 // constants
 import { DASHBOARD_ROUTE } from "./constants/routes";
 
-function App() {
+const queryClient = new QueryClient();
+
+const App: FC = (): ReactElement => {
   return (
-    <div className="App">
+    <QueryClientProvider client={queryClient}>
       <Router>
         <Routes>
           <Route element={<HomePage />} path={"/"} />
           <Route path={DASHBOARD_ROUTE} element={<Dashboard />} />
         </Routes>
       </Router>
-    </div>
+    </QueryClientProvider>
   );
-}
+};
 
 export default App;

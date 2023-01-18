@@ -23,6 +23,7 @@ import TaskForm from "../TaskForm/TaskForm";
 import EmployeeForm from "../EmployeeForm/EmployeeForm";
 import TownForm from "../TownForm/TownForm";
 import StandardTaskForm from "../StandardTaskForm/StandardTaskForm";
+import ToDo from "../../../views/TM/ToDo/ToDo";
 
 const drawerWidth = 240;
 
@@ -177,6 +178,7 @@ export default function SideBar(props: Props) {
         <EmployeeForm />
         <TownForm />
         <StandardTaskForm />
+        <ToDo />
       </Box>
     </Box>
   );

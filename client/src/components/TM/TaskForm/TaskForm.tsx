@@ -1,4 +1,7 @@
-import react, { useState } from "react";
+// External
+import { useState } from "react";
+
+//Style
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -6,11 +9,25 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { useMutation, useQueryClient } from "react-query";
 
-import Axios from "axios";
+// API
+import { sendApiRequest } from "../../../API/ApiRequests";
 
-export default function TaskForm() {
+// Types
+import { Todo } from "../../../interfaces/Todo";
+
+interface TaskFormProps {
+  data?: Todo;
+}
+export default function TaskForm(props: TaskFormProps) {
+  const { data } = props;
   const [open, setOpen] = useState(false);
+  const [todoTitle, setTodoTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [errorLabel, setErrorLabel] = useState("");
+
+  const queryClient = useQueryClient();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -18,24 +35,44 @@ export default function TaskForm() {
 
   const handleClose = () => {
     setOpen(false);
+    setTodoTitle("");
+    setDescription("");
+    setErrorLabel("");
   };
 
   const handleSave = () => {
-    Axios.post("http://localhost:3005/addTodo", { name: "testing" })
-      .then(() => {
-        alert("it worked");
-      })
-      .catch(() => {
-        alert("broken");
-      });
+    if (todoTitle !== "") {
+      if (description !== "") {
+        const todo: Todo = {
+          title: todoTitle,
+          description: description,
+        };
+
+        createTask.mutate(todo);
+        handleClose();
+      } else {
+        setErrorLabel("Please eneter a description");
+      }
+    } else {
+      setErrorLabel("Please enter a title");
+    }
   };
+
+  const createTask = useMutation(
+    (data: Todo) => sendApiRequest("/api/todo", "POST", data),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["todos"], { exact: true });
+      },
+    }
+  );
 
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
         Create To Do
       </Button>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open}>
         <DialogTitle>Create To Do</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -49,6 +86,8 @@ export default function TaskForm() {
             type="text"
             fullWidth
             variant="standard"
+            onChange={(e) => setTodoTitle(e.target.value)}
+            value={todoTitle}
           />
           <TextField
             autoFocus
@@ -58,8 +97,11 @@ export default function TaskForm() {
             type="text"
             fullWidth
             variant="standard"
+            onChange={(e) => setDescription(e.target.value)}
+            value={description}
           />
         </DialogContent>
+        <p style={{ marginLeft: "12px", color: "red" }}>{errorLabel}</p>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleSave}>Save</Button>

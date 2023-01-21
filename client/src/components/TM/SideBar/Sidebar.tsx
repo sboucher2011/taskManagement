@@ -14,7 +14,7 @@ import { stringAvatar } from "../../../utils/StringAvatar";
 import EmployeeForm from "../EmployeeForm/EmployeeForm";
 import TownForm from "../TownForm/TownForm";
 import StandardTaskForm from "../StandardTaskForm/StandardTaskForm";
-import ToDo from "../../../views/TM/ToDo/ToDo";
+import { ToDo } from "../../../views/TM/ToDo/ToDo";
 import SideBarDrawer from "./SideBarDrawer";
 
 const drawerWidth = 240;
@@ -35,8 +35,6 @@ export default function SideBar(props: Props) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-
-  console.log(tab);
 
   const handleSetTab = (selectedCategory: string) => {
     setTab(selectedCategory);

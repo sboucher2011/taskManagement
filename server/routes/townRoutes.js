@@ -7,8 +7,8 @@ import Town from "../models/towns.js";
 router.post(
   "/",
   asyncHandler(async (req, res) => {
-    const { title, description } = req.body;
-    const town = new Town({ title, description });
+    const { name, imageUrl, pocName, pocPhone, pocEmail } = req.body;
+    const town = new Town({ name, imageUrl, pocName, pocPhone, pocEmail });
     const newTown = await town.save();
     res.status(201).json(newTown);
   })
@@ -46,15 +46,21 @@ router.put(
     const town = await Town.findById(req.params.id);
 
     if (town) {
-      town.title = req.body.title || town.title;
-      town.description = req.body.description || town.description;
+      town.name = req.body.name || town.name;
+      town.imageUrl = req.body.imageUrl || town.imageUrl;
+      town.pocName = req.body.pocName || town.pocName;
+      town.pocPhone = req.body.pocPhone || town.pocPhone;
+      town.pocEmail = req.body.pocEmail || town.pocEmail;
 
       const updatedTown = await town.save();
 
       res.json({
         _id: updatedTown._id,
         title: updatedTown.name,
-        description: updatedTown.email,
+        imageUrl: updatedTown.imageUrl,
+        pocName: updatedTown.pocName,
+        pocPhone: updatedTown.pocPhone,
+        pocEmail: updatedTown.pocEmail,
       });
     } else {
       res.status(404);

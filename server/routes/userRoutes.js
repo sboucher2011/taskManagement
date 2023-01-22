@@ -7,8 +7,28 @@ import User from "../models/user.js";
 router.post(
   "/",
   asyncHandler(async (req, res) => {
-    const { title, description } = req.body;
-    const user = new User({ title, description });
+    const {
+      firstName,
+      lastName,
+      emailAddress,
+      phoneNumber,
+      address,
+      city,
+      state,
+      title,
+      role,
+    } = req.body;
+    const user = new User({
+      firstName,
+      lastName,
+      emailAddress,
+      phoneNumber,
+      address,
+      city,
+      state,
+      title,
+      role,
+    });
     const newUser = await user.save();
     res.status(201).json(newUser);
   })
@@ -46,15 +66,29 @@ router.put(
     const user = await User.findById(req.params.id);
 
     if (user) {
+      user.firstName = req.body.firstName || user.firstName;
+      user.lastName = req.body.lastName || user.lastName;
+      user.emailAddress = req.body.emailAddress || user.emailAddress;
+      user.phoneNumber = req.body.phoneNumber || user.phoneNumber;
+      user.address = req.body.address || user.address;
+      user.city = req.body.city || user.city;
+      user.state = req.body.state || user.state;
       user.title = req.body.title || user.title;
-      user.description = req.body.description || user.description;
+      user.role = req.body.role || user.role;
 
       const updatedUser = await user.save();
 
       res.json({
         _id: updatedUser._id,
-        title: updatedUser.name,
-        description: updatedUser.email,
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
+        emailAddress: updatedUser.emailAddress,
+        phoneNumber: updatedUser.phoneNumber,
+        address: updatedUser.address,
+        city: updatedUser.city,
+        state: updatedUser.state,
+        title: updatedUser.title,
+        role: updatedUser.role,
       });
     } else {
       res.status(404);

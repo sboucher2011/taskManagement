@@ -1,3 +1,4 @@
+// External
 import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -9,12 +10,14 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Container, Stack } from "@mui/system";
 import { Avatar } from "@mui/material";
-
 import { stringAvatar } from "../../../utils/StringAvatar";
-import EmployeeForm from "../EmployeeForm/EmployeeForm";
-import TownForm from "../TownForm/TownForm";
+
 import StandardTaskForm from "../StandardTaskForm/StandardTaskForm";
+
+// Components
 import { ToDo } from "../../../views/TM/ToDo/ToDo";
+import { Towns } from "../../../views/TM/Towns/Towns";
+import { Employees } from "../../../views/TM/Employees/Employees";
 import SideBarDrawer from "./SideBarDrawer";
 
 const drawerWidth = 240;
@@ -124,12 +127,12 @@ export default function SideBar(props: Props) {
         <Toolbar />
         {tab === "" && (
           <>
-            <EmployeeForm />
-            <TownForm />
             <StandardTaskForm />{" "}
           </>
         )}
         {tab === "Tasks" && <ToDo />}
+        {tab === "Town Management" && <Towns />}
+        {tab === "Employees" && <Employees />}
       </Box>
     </Box>
   );

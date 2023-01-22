@@ -1,8 +1,14 @@
 // External
 import { FC, ReactElement } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { Todo } from "../../../interfaces/Todo";
+
+// Types
+import { Todo } from "../../../types/Todo";
+
+// Services
 import { sendApiRequest } from "../../../API/ApiRequests";
+
+// Components
 import TaskForm from "../../../components/TM/TaskForm/TaskForm";
 
 export const ToDo: FC = (): ReactElement => {

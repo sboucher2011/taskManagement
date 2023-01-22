@@ -2,11 +2,23 @@ import mongoose from "mongoose";
 
 const TownScchema = mongoose.Schema(
   {
-    title: {
+    name: {
       type: String,
       required: true,
     },
-    description: {
+    imageUrl: {
+      type: String,
+      require: false,
+    },
+    pocName: {
+      type: String,
+      require: false,
+    },
+    pocPhone: {
+      type: String,
+      require: false,
+    },
+    pocEmail: {
       type: String,
       require: false,
     },

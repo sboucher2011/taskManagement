@@ -22,7 +22,7 @@ const SideBarDrawer = (props: DrawerProps) => {
       <Groupings
         title={"Manager"}
         items={[
-          { title: "Towns", icon: "ApartmentIcon" },
+          { title: "Town Management", icon: "ApartmentIcon" },
           { title: "Standard Tasks", icon: "ListAltIcon" },
           { title: "Employees", icon: "GroupIcon" },
           { title: "Reports", icon: "TextSnippetIcon" },

@@ -1,5 +1,6 @@
 // External
 import { useState } from "react";
+import { useMutation, useQueryClient } from "react-query";
 
 //Style
 import Button from "@mui/material/Button";
@@ -9,13 +10,12 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { useMutation, useQueryClient } from "react-query";
 
-// API
+// Service
 import { sendApiRequest } from "../../../API/ApiRequests";
 
 // Types
-import { Todo } from "../../../interfaces/Todo";
+import { Todo } from "../../../types/Todo";
 
 interface TaskFormProps {
   data?: Todo;

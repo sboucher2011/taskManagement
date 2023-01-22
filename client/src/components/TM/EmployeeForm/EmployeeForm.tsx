@@ -1,4 +1,8 @@
+// External
 import react, { useState } from "react";
+import { useMutation, useQueryClient } from "react-query";
+
+// Style
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -6,16 +10,97 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 
+// Service
+import { sendApiRequest } from "../../../API/ApiRequests";
+
+// Types
+import { User } from "../../../types/User";
+
 export default function EmployeeForm() {
   const [open, setOpen] = useState(false);
+  const [errorLabel, setErrorLabel] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [emailAddress, setEmailAddress] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [title, setTitle] = useState("");
+  const [role, setRole] = useState("");
+
+  const queryClient = useQueryClient();
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
+    setErrorLabel("");
+    setFirstName("");
+    setLastName("");
+    setPhoneNumber("");
+    setEmailAddress("");
+    setCity("");
+    setTitle("");
+    setRole("");
+    setAddress("");
     setOpen(false);
   };
+
+  const handleSave = () => {
+    if (firstName !== "") {
+      if (lastName !== "") {
+        if (emailAddress !== "") {
+          if (phoneNumber !== "") {
+            if (address !== "") {
+              if (city !== "") {
+                if (title !== "") {
+                  const user: User = {
+                    firstName: firstName,
+                    lastName: lastName,
+                    emailAddress: emailAddress,
+                    phoneNumber: phoneNumber,
+                    address: address,
+                    city: city,
+                    state: state,
+                    title: title,
+                    role: role,
+                  };
+
+                  createTask.mutate(user);
+                  handleClose();
+                } else {
+                  setErrorLabel("Please enter a title");
+                }
+              } else {
+                setErrorLabel("Please enter a city");
+              }
+            } else {
+              setErrorLabel("Please enter an address");
+            }
+          } else {
+            setErrorLabel("Please enter a phone number");
+          }
+        } else {
+          setErrorLabel("Please enter an email address");
+        }
+      } else {
+        setErrorLabel("Please eneter a first name");
+      }
+    } else {
+      setErrorLabel("Please enter a last name");
+    }
+  };
+
+  const createTask = useMutation(
+    (data: User) => sendApiRequest("/api/users", "POST", data),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["users"], { exact: true });
+      },
+    }
+  );
 
   return (
     <div>
@@ -33,6 +118,8 @@ export default function EmployeeForm() {
             type="text"
             fullWidth
             variant="standard"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
           />
           <TextField
             autoFocus
@@ -42,6 +129,8 @@ export default function EmployeeForm() {
             type="text"
             fullWidth
             variant="standard"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
           />
           <TextField
             autoFocus
@@ -51,6 +140,8 @@ export default function EmployeeForm() {
             type="email"
             fullWidth
             variant="standard"
+            value={emailAddress}
+            onChange={(e) => setEmailAddress(e.target.value)}
           />
           <TextField
             autoFocus
@@ -60,6 +151,8 @@ export default function EmployeeForm() {
             type="text"
             fullWidth
             variant="standard"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
           />
           <TextField
             autoFocus
@@ -69,6 +162,8 @@ export default function EmployeeForm() {
             type="text"
             fullWidth
             variant="standard"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
           />
           <TextField
             autoFocus
@@ -78,6 +173,8 @@ export default function EmployeeForm() {
             type="text"
             fullWidth
             variant="standard"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
           />
           <TextField
             id="standard-select-currency-native"
@@ -87,6 +184,8 @@ export default function EmployeeForm() {
               native: true,
             }}
             variant="standard"
+            value={state}
+            onChange={(e) => setState(e.target.value)}
           >
             <option value="AL">Alabama</option>
             <option value="AK">Alaska</option>
@@ -148,24 +247,28 @@ export default function EmployeeForm() {
             type="text"
             fullWidth
             variant="standard"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
           <TextField
             id="standard-select-currency-native"
             select
-            label="Role"
             SelectProps={{
               native: true,
             }}
             variant="standard"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
           >
-            <option value="AL">Employee</option>
-            <option value="AK">Manager</option>
-            <option value="AZ">Supervisor</option>
+            <option value="Employee">Employee</option>
+            <option value="Manager">Manager</option>
+            <option value="Supervisor">Supervisor</option>
           </TextField>
         </DialogContent>
+        <p style={{ marginLeft: "12px", color: "red" }}>{errorLabel}</p>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Save</Button>
+          <Button onClick={handleSave}>Save</Button>
         </DialogActions>
       </Dialog>
     </div>

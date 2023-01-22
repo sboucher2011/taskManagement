@@ -6,7 +6,7 @@ import { sendApiRequest } from "../../../API/ApiRequests";
 import TaskForm from "../../../components/TM/TaskForm/TaskForm";
 
 export const ToDo: FC = (): ReactElement => {
-  const { error, isLoading, data } = useQuery("todos", async () => {
+  const { isLoading, data } = useQuery("todos", async () => {
     return await sendApiRequest<Todo[]>("/api/todo", "GET");
   });
 
@@ -26,11 +26,6 @@ export const ToDo: FC = (): ReactElement => {
       <TaskForm />
       <h2>My To Do's </h2>
       {isLoading ?? <p>Loading ...</p>}
-      {error ?? (
-        <p>
-          There was an error collection your to do's please try again later ...
-        </p>
-      )}
       {data &&
         data.map((todo) => (
           <div key={todo._id}>

@@ -8,6 +8,8 @@ import cors from "cors";
 
 // routes
 import toDoRoutes from "./routes/todoRoutes.js";
+import townRoutes from "./routes/townRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 //----------------------------
 // DATABASE CONNECTION
@@ -22,6 +24,8 @@ app.use(express.json());
 
 // routes
 app.use("/api/todo", toDoRoutes);
+app.use("/api/towns", townRoutes);
+app.use("/api/users", userRoutes);
 
 // deployment
 const __dirname = path.resolve();

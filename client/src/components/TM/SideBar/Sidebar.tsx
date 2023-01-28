@@ -1,5 +1,8 @@
 // External
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import moment from "moment";
+
+// Style
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -34,10 +37,37 @@ export default function SideBar(props: Props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [tab, setTab] = useState("");
+  const [day, setDay] = useState("");
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  useEffect(() => {
+    const day = moment().day();
+
+    if (day === 1) {
+      setDay("Monday");
+    }
+    if (day === 2) {
+      setDay("Tuesday");
+    }
+    if (day === 3) {
+      setDay("Wednesday");
+    }
+    if (day === 4) {
+      setDay("Thursday");
+    }
+    if (day === 5) {
+      setDay("Friday");
+    }
+    if (day === 6) {
+      setDay("Saturday");
+    }
+    if (day === 7) {
+      setDay("Sunday");
+    }
+  }, []);
 
   const handleSetTab = (selectedCategory: string) => {
     setTab(selectedCategory);
@@ -66,15 +96,18 @@ export default function SideBar(props: Props) {
           >
             <MenuIcon />
           </IconButton>
-          <Stack direction="row" justifyContent="space-between" spacing={4}>
+          <Stack direction="row" justifyContent="space-between">
             <Typography variant="h6" noWrap component="div">
-              Monday January 16, 2023
+              {day}, {moment().format("MMMM DD, YYYY")}
             </Typography>
-            <Container>
+            <Container sx={{ display: "flex" }}>
               <Typography variant="h6" noWrap component="div">
                 Welcome, Janice
               </Typography>
-              <Avatar {...stringAvatar("Janice Boucher")} />
+              <Avatar
+                style={{ marginLeft: "8px" }}
+                {...stringAvatar("Janice Boucher")}
+              />
             </Container>
           </Stack>
         </Toolbar>
@@ -123,6 +156,7 @@ export default function SideBar(props: Props) {
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
+        style={{ background: "rgb(224, 223, 220)" }}
       >
         <Toolbar />
         {tab === "" && (

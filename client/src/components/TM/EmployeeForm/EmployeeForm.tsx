@@ -42,6 +42,7 @@ export default function EmployeeForm() {
     setPhoneNumber("");
     setEmailAddress("");
     setCity("");
+    setState("");
     setTitle("");
     setRole("");
     setAddress("");
@@ -179,7 +180,6 @@ export default function EmployeeForm() {
           <TextField
             id="standard-select-currency-native"
             select
-            label="State"
             SelectProps={{
               native: true,
             }}

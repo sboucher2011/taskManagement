@@ -18,6 +18,7 @@ import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 import PersonIcon from "@mui/icons-material/Person";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ContactSupportIcon from "@mui/icons-material/ContactSupport";
 
 interface GroupingsProps {
   title: string;
@@ -46,6 +47,7 @@ function Groupings(props: GroupingsProps) {
                 {item.icon === "TaskIcon" && <TaskIcon />}
                 {item.icon === "LocationCityIcon" && <LocationCityIcon />}
                 {item.icon === "ListAltIcon" && <ListAltIcon />}
+                {item.icon === "ContactSupportIcon" && <ContactSupportIcon />}
               </ListItemIcon>
               <ListItemText primary={item.title} />
             </ListItemButton>

@@ -34,6 +34,7 @@ const SideBarDrawer = (props: DrawerProps) => {
         items={[
           { title: "Profile", icon: "PersonIcon" },
           { title: "Settings", icon: "SettingsIcon" },
+          { title: "Support", icon: "ContactSupportIcon" },
           { title: "Log Out", icon: "LogoutIcon" },
         ]}
         onCategorySelected={onCategorySelected}

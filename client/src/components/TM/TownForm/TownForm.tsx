@@ -81,7 +81,7 @@ export default function TownForm() {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button variant="contained" onClick={handleClickOpen}>
         Create New Town
       </Button>
       <Dialog open={open}>

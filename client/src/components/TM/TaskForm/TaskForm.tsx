@@ -69,7 +69,7 @@ export default function TaskForm(props: TaskFormProps) {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button variant="contained" onClick={handleClickOpen}>
         Create To Do
       </Button>
       <Dialog open={open}>

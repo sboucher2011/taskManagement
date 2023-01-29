@@ -20,7 +20,7 @@ export default function StandardTaskForm() {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button variant="contained" onClick={handleClickOpen}>
         Create New Standard Task
       </Button>
       <Dialog open={open} onClose={handleClose}>

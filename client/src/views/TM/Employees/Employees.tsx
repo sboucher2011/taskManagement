@@ -53,7 +53,14 @@ export const Employees: FC = (): ReactElement => {
           {data &&
             data.map((user, index) => (
               <div key={user._id} style={{ paddingTop: "12px" }}>
-                <Grid item xs={2} sm={4} md={4} key={index}>
+                <Grid
+                  item
+                  xs={2}
+                  sx={{ padding: "4px" }}
+                  sm={4}
+                  md={4}
+                  key={index}
+                >
                   <EmployeeCard
                     employee={user}
                     handleRemoveEmployee={() => deleteUser(user._id!)}

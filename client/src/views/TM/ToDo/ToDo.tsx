@@ -54,7 +54,14 @@ export const ToDo: FC = (): ReactElement => {
           {data &&
             data.map((todo, index) => (
               <div key={todo._id} style={{ paddingTop: "12px" }}>
-                <Grid item xs={2} sm={4} md={4} key={index}>
+                <Grid
+                  item
+                  xs={2}
+                  sm={4}
+                  md={4}
+                  sx={{ padding: "4px" }}
+                  key={index}
+                >
                   <ToDoCard
                     toDo={todo}
                     handleRemoveTodo={() => deleteTodo(todo._id!)}

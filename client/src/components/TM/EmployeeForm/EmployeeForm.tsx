@@ -25,9 +25,9 @@ export default function EmployeeForm() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
-  const [state, setState] = useState("");
+  const [state, setState] = useState("Alabama");
   const [title, setTitle] = useState("");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("Employee");
 
   const queryClient = useQueryClient();
 
@@ -42,9 +42,9 @@ export default function EmployeeForm() {
     setPhoneNumber("");
     setEmailAddress("");
     setCity("");
-    setState("");
+    setState("Alabama");
     setTitle("");
-    setRole("");
+    setRole("Employee");
     setAddress("");
     setOpen(false);
   };
@@ -105,7 +105,7 @@ export default function EmployeeForm() {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button variant="contained" onClick={handleClickOpen}>
         Create New Employee
       </Button>
       <Dialog open={open}>

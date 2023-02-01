@@ -1,25 +1,84 @@
 // External
-import { FC, ReactElement } from "react";
+import React, { useState, ReactElement, FC } from "react";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-
-// Style
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
 
 // Types
 import { Todo } from "../../../types/Todo";
-
-// Services
-import { sendApiRequest } from "../../../API/ApiRequests";
+import { ColumnNames } from "../../../types/ColumnNames";
 
 // Components
 import TaskForm from "../../../components/TM/TaskForm/TaskForm";
 import ToDoCard from "../../../components/TM/ToDoCard/ToDoCard";
 
+// Services
+import { sendApiRequest } from "../../../API/ApiRequests";
+
 export const ToDo: FC = (): ReactElement => {
   const { isLoading, data } = useQuery("todos", async () => {
     return await sendApiRequest<Todo[]>("/api/todo", "GET");
   });
+
+  console.log(data);
+
+  const columnsFromBackend: ColumnNames[] = [
+    {
+      title: "Backlog",
+      items: data,
+    },
+    {
+      title: "To do",
+      items: [],
+    },
+    {
+      title: "In Progress",
+      items: [],
+    },
+    {
+      title: "Done",
+      items: [],
+    },
+  ];
+  const [columns, setColumns] = useState<ColumnNames[]>(
+    data ? columnsFromBackend : []
+  );
+
+  const onDragEnd = (result: any, columns: ColumnNames[], setColumns: any) => {
+    if (!result.destination) return;
+    const { source, destination } = result;
+
+    if (source.droppableId !== destination.droppableId) {
+      const sourceColumn = columns[source.droppableId];
+      const destColumn = columns[destination.droppableId];
+      const sourceItems = [...sourceColumn.items];
+      const destItems = [...destColumn.items];
+      const [removed] = sourceItems.splice(source.index, 1);
+      destItems.splice(destination.index, 0, removed);
+      setColumns({
+        ...columns,
+        [source.droppableId]: {
+          ...sourceColumn,
+          items: sourceItems,
+        },
+        [destination.droppableId]: {
+          ...destColumn,
+          items: destItems,
+        },
+      });
+    } else {
+      const column = columns[source.droppableId];
+      const copiedItems = [...column.items];
+      const [removed] = copiedItems.splice(source.index, 1);
+      copiedItems.splice(destination.index, 0, removed);
+      setColumns({
+        ...columns,
+        [source.droppableId]: {
+          ...column,
+          items: copiedItems,
+        },
+      });
+    }
+  };
 
   const queryClient = useQueryClient();
 
@@ -36,41 +95,97 @@ export const ToDo: FC = (): ReactElement => {
     <>
       <h2>My To Do's </h2>
       <TaskForm />
-
-      <Box
-        sx={{
-          flexGrow: 1,
-          marginLeft: "12px",
-          marginTop: "25px",
-          marginRight: "12px",
-        }}
-      >
-        <Grid
-          container
-          spacing={{ xs: 2, md: 3 }}
-          columns={{ xs: 4, sm: 8, md: 12 }}
+      {isLoading && <p>Loading...</p>}
+      {data && (
+        <div
+          style={{ display: "flex", justifyContent: "center", height: "100%" }}
         >
-          {isLoading ?? <p>Loading ...</p>}
-          {data &&
-            data.map((todo, index) => (
-              <div key={todo._id} style={{ paddingTop: "12px" }}>
-                <Grid
-                  item
-                  xs={2}
-                  sm={4}
-                  md={4}
-                  sx={{ padding: "4px" }}
-                  key={index}
+          <DragDropContext
+            onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+          >
+            {Object.entries(columns).map(([columnId, column], index) => {
+              return (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                  key={columnId}
                 >
-                  <ToDoCard
-                    toDo={todo}
-                    handleRemoveTodo={() => deleteTodo(todo._id!)}
-                  />
-                </Grid>
-              </div>
-            ))}
-        </Grid>
-      </Box>
+                  <h2>{column.title}</h2>
+                  <div style={{ margin: 8 }}>
+                    <Droppable droppableId={columnId} key={columnId}>
+                      {(provided, snapshot) => {
+                        return (
+                          <div
+                            {...provided.droppableProps}
+                            ref={provided.innerRef}
+                            style={{
+                              background: snapshot.isDraggingOver
+                                ? "lightblue"
+                                : "lightgrey",
+                              padding: 4,
+                              width: 250,
+                              minHeight: 500,
+                            }}
+                          >
+                            {column.items.map((item: any, index: number) => {
+                              return (
+                                <Draggable
+                                  key={item._id}
+                                  draggableId={item._id!}
+                                  index={index}
+                                >
+                                  {(provided, snapshot) => {
+                                    return (
+                                      <div
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                      >
+                                        <ToDoCard
+                                          toDo={item}
+                                          handleRemoveTodo={() =>
+                                            deleteTodo(item._id!)
+                                          }
+                                        />
+                                      </div>
+                                      // <div
+                                      //   ref={provided.innerRef}
+                                      //   {...provided.draggableProps}
+                                      //   {...provided.dragHandleProps}
+                                      //   style={{
+                                      //     userSelect: "none",
+                                      //     padding: 16,
+                                      //     margin: "0 0 8px 0",
+                                      //     minHeight: "50px",
+                                      //     backgroundColor: snapshot.isDragging
+                                      //       ? "#263B4A"
+                                      //       : "#456C86",
+                                      //     color: "white",
+                                      //     ...provided.draggableProps.style,
+                                      //   }}
+                                      // >
+                                      //   {item.title}
+                                      // </div>
+                                    );
+                                  }}
+                                </Draggable>
+                              );
+                            })}
+                            {provided.placeholder}
+                          </div>
+                        );
+                      }}
+                    </Droppable>
+                  </div>
+                </div>
+              );
+            })}
+          </DragDropContext>
+        </div>
+      )}
     </>
   );
 };

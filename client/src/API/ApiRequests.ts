@@ -1,6 +1,6 @@
 type Method = "GET" | "POST" | "PUT" | "DELETE";
 
-function returnCorrectRequest(method: Method, data: unknown): RequestInit {
+function returnCorrectRequest(method: Method, data: any): RequestInit {
   if (method === "GET") {
     return {
       method: method,

@@ -1,5 +1,5 @@
 // External
-import React, { useState, ReactElement, FC } from "react";
+import React, { useState, ReactElement, FC, useEffect } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
@@ -15,30 +15,42 @@ import ToDoCard from "../../../components/TM/ToDoCard/ToDoCard";
 import { sendApiRequest } from "../../../API/ApiRequests";
 
 export const ToDo: FC = (): ReactElement => {
+  let columnsFromBackend: ColumnNames[] = [];
   const { isLoading, data } = useQuery("todos", async () => {
     return await sendApiRequest<Todo[]>("/api/todo", "GET");
   });
 
-  console.log(data);
+  const [openForm, setOpenForm] = useState(false);
+  const [selectedToDo, setSelectedToDo] = useState<Todo | undefined>(undefined);
 
-  const columnsFromBackend: ColumnNames[] = [
-    {
-      title: "Backlog",
-      items: data,
-    },
-    {
-      title: "To do",
-      items: [],
-    },
-    {
-      title: "In Progress",
-      items: [],
-    },
-    {
-      title: "Done",
-      items: [],
-    },
-  ];
+  useEffect(() => {
+    if (data) {
+      setColumns([
+        {
+          title: "Backlog",
+          items: data.filter((todo) => todo.status === "Backlog"),
+        },
+        {
+          title: "To do",
+          items: data.filter((todo) => todo.status === "To do"),
+        },
+        {
+          title: "In Progress",
+          items: data.filter((todo) => todo.status === "In Progress"),
+        },
+        {
+          title: "Done",
+          items: data.filter((todo) => todo.status === "Done"),
+        },
+      ]);
+    }
+  }, [data]);
+
+  const handleEditTodo = (todo: Todo) => {
+    setSelectedToDo(todo);
+    setOpenForm(true);
+  };
+
   const [columns, setColumns] = useState<ColumnNames[]>(
     data ? columnsFromBackend : []
   );
@@ -47,6 +59,8 @@ export const ToDo: FC = (): ReactElement => {
     if (!result.destination) return;
     const { source, destination } = result;
 
+    console.log(source, destination);
+
     if (source.droppableId !== destination.droppableId) {
       const sourceColumn = columns[source.droppableId];
       const destColumn = columns[destination.droppableId];
@@ -54,6 +68,19 @@ export const ToDo: FC = (): ReactElement => {
       const destItems = [...destColumn.items];
       const [removed] = sourceItems.splice(source.index, 1);
       destItems.splice(destination.index, 0, removed);
+
+      data?.map((todo) => {
+        if (todo.status === sourceColumn.title) {
+          let updatedTodo: Todo = {
+            title: todo.title,
+            description: todo.description,
+            status: destColumn.title,
+            _id: todo._id,
+          };
+          updateTask.mutate(updatedTodo);
+        }
+      });
+
       setColumns({
         ...columns,
         [source.droppableId]: {
@@ -80,6 +107,16 @@ export const ToDo: FC = (): ReactElement => {
     }
   };
 
+  const updateTask = useMutation(
+    (updated: Todo) =>
+      sendApiRequest(`/api/todo/${updated._id}`, "PUT", updated),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["todos"], { exact: true });
+      },
+    }
+  );
+
   const queryClient = useQueryClient();
 
   const { mutate: deleteTodo } = useMutation(
@@ -94,7 +131,14 @@ export const ToDo: FC = (): ReactElement => {
   return (
     <>
       <h2>My To Do's </h2>
-      <TaskForm />
+      <TaskForm
+        openForm={openForm}
+        handleCloseFunc={() => {
+          setOpenForm(false);
+          setSelectedToDo(undefined);
+        }}
+        data={selectedToDo}
+      />
       {isLoading && <p>Loading...</p>}
       {data && (
         <div
@@ -148,6 +192,9 @@ export const ToDo: FC = (): ReactElement => {
                                           toDo={item}
                                           handleRemoveTodo={() =>
                                             deleteTodo(item._id!)
+                                          }
+                                          handleEditTodo={() =>
+                                            handleEditTodo(item)
                                           }
                                         />
                                       </div>

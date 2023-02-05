@@ -17,10 +17,11 @@ import { Todo } from "../../../types/Todo";
 interface ToDoCardProps {
   toDo: Todo;
   handleRemoveTodo: () => void;
+  handleEditTodo: () => void;
 }
 
 function ToDoCard(props: ToDoCardProps) {
-  const { toDo, handleRemoveTodo } = props;
+  const { toDo, handleRemoveTodo, handleEditTodo } = props;
 
   const handleIconClicked = (type: string) => {
     <CircularProgress />;
@@ -40,7 +41,7 @@ function ToDoCard(props: ToDoCardProps) {
         </Typography>
       </CardContent>
       <CardActions>
-        <EditIcon />
+        <EditIcon onClick={() => handleEditTodo()} />
         <DeleteIcon onClick={() => handleIconClicked("delete")} />
       </CardActions>
     </Card>

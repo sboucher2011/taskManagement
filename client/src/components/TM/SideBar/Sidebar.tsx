@@ -22,6 +22,7 @@ import { ToDo } from "../../../views/TM/ToDo/ToDo";
 import { Towns } from "../../../views/TM/Towns/Towns";
 import { Employees } from "../../../views/TM/Employees/Employees";
 import SideBarDrawer from "./SideBarDrawer";
+import { StandardTasks } from "../../../views/TM/StandardTasks/StandardTasks";
 
 const drawerWidth = 240;
 
@@ -167,6 +168,7 @@ export default function SideBar(props: Props) {
         {tab === "Tasks" && <ToDo />}
         {tab === "Town Management" && <Towns />}
         {tab === "Employees" && <Employees />}
+        {tab === "Standard Tasks" && <StandardTasks />}
       </Box>
     </Box>
   );

@@ -145,6 +145,7 @@ export default function TaskForm(props: TaskFormProps) {
             <option value="Backlog">Backlog</option>
             <option value="To do">To do</option>
             <option value="In Progress">In Progress</option>
+            <option value="Done">Done</option>
           </TextField>
         </DialogContent>
         <p style={{ marginLeft: "12px", color: "red" }}>{errorLabel}</p>

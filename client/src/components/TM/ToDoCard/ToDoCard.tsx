@@ -31,7 +31,7 @@ function ToDoCard(props: ToDoCardProps) {
   };
 
   return (
-    <Card sx={{ minWidth: 275 }}>
+    <Card sx={{ minWidth: 275, marginBottom: "5px" }}>
       <CardContent>
         <Typography variant="h5" component="div">
           {toDo.title}

@@ -60,6 +60,7 @@ export const ToDo: FC = (): ReactElement => {
     const { source, destination } = result;
 
     console.log(source, destination);
+    let move = false;
 
     if (source.droppableId !== destination.droppableId) {
       const sourceColumn = columns[source.droppableId];
@@ -70,13 +71,14 @@ export const ToDo: FC = (): ReactElement => {
       destItems.splice(destination.index, 0, removed);
 
       data?.map((todo) => {
-        if (todo.status === sourceColumn.title) {
+        if (todo.status === sourceColumn.title && move === false) {
           let updatedTodo: Todo = {
             title: todo.title,
             description: todo.description,
             status: destColumn.title,
             _id: todo._id,
           };
+          move = true;
           updateTask.mutate(updatedTodo);
         }
       });
@@ -170,7 +172,7 @@ export const ToDo: FC = (): ReactElement => {
                                 ? "lightblue"
                                 : "lightgrey",
                               padding: 4,
-                              width: 250,
+                              width: 290,
                               minHeight: 500,
                             }}
                           >

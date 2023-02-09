@@ -160,11 +160,7 @@ export default function SideBar(props: Props) {
         style={{ background: "rgb(224, 223, 220)" }}
       >
         <Toolbar />
-        {tab === "" && (
-          <>
-            <StandardTaskForm />{" "}
-          </>
-        )}
+        {tab === "" && <>put something here??</>}
         {tab === "Tasks" && <ToDo />}
         {tab === "Town Management" && <Towns />}
         {tab === "Employees" && <Employees />}

@@ -43,14 +43,19 @@ export default function StandardTaskForm(props: StandardTaskFormProps) {
       setChargeNumber(data?.chargeNumber);
       setFrequency(data?.frequency);
       setType("Edit");
+    } else {
+      setType("Create");
     }
-  }, [data, openForm]);
+  }, [data, openForm, type]);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
+    if (handleCloseFunc) {
+      handleCloseFunc();
+    }
     setOpen(false);
     setTitle("");
     setDescription("");

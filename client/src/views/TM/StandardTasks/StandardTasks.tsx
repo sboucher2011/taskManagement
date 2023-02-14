@@ -6,6 +6,8 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { DataGrid, GridColDef, GridRowId } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 // Services
 import { sendApiRequest } from "../../../API/ApiRequests";
@@ -13,37 +15,33 @@ import { sendApiRequest } from "../../../API/ApiRequests";
 // Types
 import { StandardTask } from "../../../types/StandardTasks";
 import StandardTaskForm from "../../../components/TM/StandardTaskForm/StandardTaskForm";
+import { Button } from "@mui/material";
 
 export const StandardTasks: FC = (): ReactElement => {
   const [selectionModel, setSelectionModel] = useState<GridRowId[]>([]);
+  const [selectedId, setSelectedId] = useState<string>("");
+
+  const [openForm, setOpenForm] = useState(false);
+  const [selectedStandardTask, setSelectedStandardTask] = useState<
+    StandardTask | undefined
+  >(undefined);
 
   const columns: GridColDef[] = [
     { field: "title", headerName: "Title", width: 230 },
     { field: "description", headerName: "Description", width: 400 },
-    // {
-    //   field: "fullName",
-    //   headerName: "Full name",
-    //   description: "This column has a value getter and is not sortable.",
-    //   sortable: false,
-    //   width: 160,
-    //   valueGetter: (params: GridValueGetterParams) =>
-    //     `${params.row.firstName || ""} ${params.row.lastName || ""}`,
-    // },
+    { field: "chargeNumber", headerName: "Charge Number", width: 400 },
+    { field: "frequency", headerName: "Frequency", width: 400 },
   ];
 
   const { isLoading, data: rows } = useQuery("standardTasks", async () => {
     return await sendApiRequest<StandardTask[]>("/api/standardTasks", "GET");
   });
 
-  const updateStandardTask = useMutation(
-    (updated: StandardTask) =>
-      sendApiRequest(`/api/standardTasks/${updated._id}`, "PUT", updated),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["standardTasks"], { exact: true });
-      },
-    }
-  );
+  const handleEditTask = (taskid: string) => {
+    const selectedTask = rows!.filter((row) => row._id === taskid);
+    setSelectedStandardTask(selectedTask[0]);
+    setOpenForm(true);
+  };
 
   const queryClient = useQueryClient();
 
@@ -58,7 +56,36 @@ export const StandardTasks: FC = (): ReactElement => {
 
   return (
     <div>
-      <StandardTaskForm />
+      <StandardTaskForm
+        openForm={openForm}
+        data={selectedStandardTask}
+        handleCloseFunc={() => {
+          setOpenForm(false);
+          setSelectedStandardTask(undefined);
+        }}
+      />
+      {selectedId && (
+        <Box sx={{ marginTop: "12px" }}>
+          <Button
+            variant="contained"
+            color="warning"
+            endIcon={<EditIcon />}
+            onClick={() => handleEditTask(selectedId)}
+          >
+            Edit
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            endIcon={<DeleteIcon />}
+            sx={{ marginLeft: "12px" }}
+            onClick={() => deleteStandardTask(selectedId)}
+          >
+            Delete
+          </Button>
+        </Box>
+      )}
+
       {isLoading && <p>Loading...</p>}
       {rows && (
         <Box
@@ -87,9 +114,10 @@ export const StandardTasks: FC = (): ReactElement => {
                     const result = selection.filter(
                       (s) => !selectionSet.has(s)
                     );
-
+                    setSelectedId(result.toString());
                     setSelectionModel(result);
                   } else {
+                    setSelectedId(selection.toString());
                     setSelectionModel(selection);
                   }
                 }}

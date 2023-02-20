@@ -16,7 +16,12 @@ import { sendApiRequest } from "../../../API/ApiRequests";
 import TownForm from "../../../components/TM/TownForm/TownForm";
 import TownCard from "../../../components/TM/TownCard/TownCard";
 
-export const Towns: FC = (): ReactElement => {
+interface TownProps {
+  handleSelectDetail: (selectedTown: Town) => void;
+}
+
+function Towns(props: TownProps) {
+  const { handleSelectDetail } = props;
   const { isLoading, data } = useQuery("towns", async () => {
     return await sendApiRequest<Town[]>("/api/towns", "GET");
   });
@@ -62,10 +67,12 @@ export const Towns: FC = (): ReactElement => {
                   sx={{ padding: "4px" }}
                   key={index}
                 >
-                  <TownCard
-                    town={town}
-                    handleRemoveTown={() => deleteTown(town._id!)}
-                  />
+                  <div onClick={() => handleSelectDetail(town)}>
+                    <TownCard
+                      town={town}
+                      handleRemoveTown={() => deleteTown(town._id!)}
+                    />
+                  </div>
                 </Grid>
               </div>
             ))}
@@ -73,4 +80,6 @@ export const Towns: FC = (): ReactElement => {
       </Box>
     </>
   );
-};
+}
+
+export default Towns;

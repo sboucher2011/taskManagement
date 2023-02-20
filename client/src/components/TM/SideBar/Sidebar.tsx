@@ -19,10 +19,12 @@ import StandardTaskForm from "../StandardTaskForm/StandardTaskForm";
 
 // Components
 import { ToDo } from "../../../views/TM/ToDo/ToDo";
-import { Towns } from "../../../views/TM/Towns/Towns";
+import Towns from "../../../views/TM/Towns/Towns";
+import TownDetail from "../../../views/TM/Towns/TownDetail";
 import { Employees } from "../../../views/TM/Employees/Employees";
 import SideBarDrawer from "./SideBarDrawer";
 import { StandardTasks } from "../../../views/TM/StandardTasks/StandardTasks";
+import { Town } from "../../../types/Town";
 
 const drawerWidth = 240;
 
@@ -39,6 +41,7 @@ export default function SideBar(props: Props) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [tab, setTab] = useState("");
   const [day, setDay] = useState("");
+  const [selectedTown, setSelectedTown] = useState<Town | undefined>(undefined);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -69,6 +72,11 @@ export default function SideBar(props: Props) {
       setDay("Sunday");
     }
   }, []);
+
+  const handleTownSelected = (townSelected: Town) => {
+    setSelectedTown(townSelected);
+    setTab("Details");
+  };
 
   const handleSetTab = (selectedCategory: string) => {
     setTab(selectedCategory);
@@ -162,9 +170,12 @@ export default function SideBar(props: Props) {
         <Toolbar />
         {tab === "" && <>put something here??</>}
         {tab === "Tasks" && <ToDo />}
-        {tab === "Town Management" && <Towns />}
+        {tab === "Town Management" && (
+          <Towns handleSelectDetail={(x) => handleTownSelected(x)} />
+        )}
         {tab === "Employees" && <Employees />}
         {tab === "Standard Tasks" && <StandardTasks />}
+        {tab === "Details" && <TownDetail town={selectedTown} />}
       </Box>
     </Box>
   );

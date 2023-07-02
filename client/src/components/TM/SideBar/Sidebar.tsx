@@ -48,27 +48,27 @@ export default function SideBar(props: Props) {
   };
 
   useEffect(() => {
-    const day = moment().day();
+    const weekday = moment().day();
 
-    if (day === 1) {
+    if (weekday === 1) {
       setDay("Monday");
     }
-    if (day === 2) {
+    if (weekday === 2) {
       setDay("Tuesday");
     }
-    if (day === 3) {
+    if (weekday === 3) {
       setDay("Wednesday");
     }
-    if (day === 4) {
+    if (weekday === 4) {
       setDay("Thursday");
     }
-    if (day === 5) {
+    if (weekday === 5) {
       setDay("Friday");
     }
-    if (day === 6) {
+    if (weekday === 6) {
       setDay("Saturday");
     }
-    if (day === 7) {
+    if (weekday === 0) {
       setDay("Sunday");
     }
   }, []);
@@ -106,10 +106,10 @@ export default function SideBar(props: Props) {
             <MenuIcon />
           </IconButton>
           <Stack direction="row" justifyContent="space-between">
-            <Typography variant="h6" noWrap component="div">
+            <Typography className="navDate" variant="h6" noWrap component="div">
               {day}, {moment().format("MMMM DD, YYYY")}
             </Typography>
-            <Container sx={{ display: "flex" }}>
+            <Container className="navWelcome" sx={{ display: "flex" }}>
               <Typography variant="h6" noWrap component="div">
                 Welcome, Janice
               </Typography>

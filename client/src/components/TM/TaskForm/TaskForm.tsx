@@ -1,5 +1,5 @@
 // External
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 
 //Style
@@ -19,25 +19,43 @@ import { Todo } from "../../../types/Todo";
 
 interface TaskFormProps {
   data?: Todo;
+  openForm?: boolean;
+  handleCloseFunc?: () => void;
 }
 export default function TaskForm(props: TaskFormProps) {
-  const { data } = props;
+  const { data, openForm, handleCloseFunc } = props;
   const [open, setOpen] = useState(false);
   const [todoTitle, setTodoTitle] = useState("");
+  const [todoStatus, setTodoStatus] = useState("Backlog");
   const [description, setDescription] = useState("");
   const [errorLabel, setErrorLabel] = useState("");
+  const [type, setType] = useState("Create");
 
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (openForm && data !== undefined) {
+      setOpen(true);
+      setTodoTitle(data?.title);
+      setDescription(data?.description);
+      setTodoStatus(data?.status);
+      setType("Edit");
+    }
+  }, [data, openForm]);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
+    if (handleCloseFunc) {
+      handleCloseFunc();
+    }
     setOpen(false);
     setTodoTitle("");
     setDescription("");
     setErrorLabel("");
+    setTodoStatus("Backlog");
   };
 
   const handleSave = () => {
@@ -46,9 +64,14 @@ export default function TaskForm(props: TaskFormProps) {
         const todo: Todo = {
           title: todoTitle,
           description: description,
+          status: todoStatus,
         };
 
-        createTask.mutate(todo);
+        if (type === "Create") {
+          createTask.mutate(todo);
+        } else {
+          updateTask.mutate(todo);
+        }
         handleClose();
       } else {
         setErrorLabel("Please eneter a description");
@@ -67,13 +90,22 @@ export default function TaskForm(props: TaskFormProps) {
     }
   );
 
+  const updateTask = useMutation(
+    (updated: Todo) => sendApiRequest(`/api/todo/${data?._id}`, "PUT", updated),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["todos"], { exact: true });
+      },
+    }
+  );
+
   return (
     <div>
       <Button variant="contained" onClick={handleClickOpen}>
         Create To Do
       </Button>
       <Dialog open={open}>
-        <DialogTitle>Create To Do</DialogTitle>
+        <DialogTitle>{type} To Do</DialogTitle>
         <DialogContent>
           <DialogContentText>
             A To Do is a private task that can only be seen by you.
@@ -100,6 +132,21 @@ export default function TaskForm(props: TaskFormProps) {
             onChange={(e) => setDescription(e.target.value)}
             value={description}
           />
+          <TextField
+            id="standard-select-currency-native"
+            select
+            SelectProps={{
+              native: true,
+            }}
+            variant="standard"
+            value={todoStatus}
+            onChange={(e) => setTodoStatus(e.target.value)}
+          >
+            <option value="Backlog">Backlog</option>
+            <option value="To do">To do</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Done">Done</option>
+          </TextField>
         </DialogContent>
         <p style={{ marginLeft: "12px", color: "red" }}>{errorLabel}</p>
         <DialogActions>

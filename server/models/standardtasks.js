@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const ToDoScchema = mongoose.Schema(
+const StandardTaskScchema = mongoose.Schema(
   {
     title: {
       type: String,
@@ -10,7 +10,11 @@ const ToDoScchema = mongoose.Schema(
       type: String,
       require: false,
     },
-    status: {
+    frequency: {
+      type: String,
+      require: false,
+    },
+    chargeNumber: {
       type: String,
       require: false,
     },
@@ -20,6 +24,6 @@ const ToDoScchema = mongoose.Schema(
   }
 );
 
-const Todo = mongoose.model("Todo", ToDoScchema);
+const StandardTask = mongoose.model("StandardTask", StandardTaskScchema);
 
-export default Todo;
+export default StandardTask;

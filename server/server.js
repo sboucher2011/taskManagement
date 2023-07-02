@@ -10,6 +10,7 @@ import cors from "cors";
 import toDoRoutes from "./routes/todoRoutes.js";
 import townRoutes from "./routes/townRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import standTaskRoutes from "./routes/standardTaskRoutes.js";
 
 //----------------------------
 // DATABASE CONNECTION
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use("/api/todo", toDoRoutes);
 app.use("/api/towns", townRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/standardTasks", standTaskRoutes);
 
 // deployment
 const __dirname = path.resolve();

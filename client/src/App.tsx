@@ -2,6 +2,7 @@
 import { QueryClient, QueryClientProvider } from "react-query";
 import React, { FC, ReactElement } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./App.css";
 
 // views
 import HomePage from "./views/DZL/HomePage/Home";

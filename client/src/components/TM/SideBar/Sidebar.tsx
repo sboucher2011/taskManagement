@@ -19,9 +19,12 @@ import StandardTaskForm from "../StandardTaskForm/StandardTaskForm";
 
 // Components
 import { ToDo } from "../../../views/TM/ToDo/ToDo";
-import { Towns } from "../../../views/TM/Towns/Towns";
+import Towns from "../../../views/TM/Towns/Towns";
+import TownDetail from "../../../views/TM/Towns/TownDetail";
 import { Employees } from "../../../views/TM/Employees/Employees";
 import SideBarDrawer from "./SideBarDrawer";
+import { StandardTasks } from "../../../views/TM/StandardTasks/StandardTasks";
+import { Town } from "../../../types/Town";
 
 const drawerWidth = 240;
 
@@ -38,36 +41,42 @@ export default function SideBar(props: Props) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [tab, setTab] = useState("");
   const [day, setDay] = useState("");
+  const [selectedTown, setSelectedTown] = useState<Town | undefined>(undefined);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
   useEffect(() => {
-    const day = moment().day();
+    const weekday = moment().day();
 
-    if (day === 1) {
+    if (weekday === 1) {
       setDay("Monday");
     }
-    if (day === 2) {
+    if (weekday === 2) {
       setDay("Tuesday");
     }
-    if (day === 3) {
+    if (weekday === 3) {
       setDay("Wednesday");
     }
-    if (day === 4) {
+    if (weekday === 4) {
       setDay("Thursday");
     }
-    if (day === 5) {
+    if (weekday === 5) {
       setDay("Friday");
     }
-    if (day === 6) {
+    if (weekday === 6) {
       setDay("Saturday");
     }
-    if (day === 7) {
+    if (weekday === 0) {
       setDay("Sunday");
     }
   }, []);
+
+  const handleTownSelected = (townSelected: Town) => {
+    setSelectedTown(townSelected);
+    setTab("Details");
+  };
 
   const handleSetTab = (selectedCategory: string) => {
     setTab(selectedCategory);
@@ -97,10 +106,10 @@ export default function SideBar(props: Props) {
             <MenuIcon />
           </IconButton>
           <Stack direction="row" justifyContent="space-between">
-            <Typography variant="h6" noWrap component="div">
+            <Typography className="navDate" variant="h6" noWrap component="div">
               {day}, {moment().format("MMMM DD, YYYY")}
             </Typography>
-            <Container sx={{ display: "flex" }}>
+            <Container className="navWelcome" sx={{ display: "flex" }}>
               <Typography variant="h6" noWrap component="div">
                 Welcome, Janice
               </Typography>
@@ -159,14 +168,14 @@ export default function SideBar(props: Props) {
         style={{ background: "rgb(224, 223, 220)" }}
       >
         <Toolbar />
-        {tab === "" && (
-          <>
-            <StandardTaskForm />{" "}
-          </>
-        )}
+        {tab === "" && <>put something here??</>}
         {tab === "Tasks" && <ToDo />}
-        {tab === "Town Management" && <Towns />}
+        {tab === "Town Management" && (
+          <Towns handleSelectDetail={(x) => handleTownSelected(x)} />
+        )}
         {tab === "Employees" && <Employees />}
+        {tab === "Standard Tasks" && <StandardTasks />}
+        {tab === "Details" && <TownDetail town={selectedTown} />}
       </Box>
     </Box>
   );
